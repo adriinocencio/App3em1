@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={TelaInicial} options={{ title: 'Calculadora' }} />
+        <Stack.Screen name="CalculadoraIdade" component={TelaCalculadoraIdade} options={{ title: 'Calculadora de Idade' }} />
         <Stack.Screen name="AreaTriangulo" component={TelaAreaTriangulo} options={{ title: 'Área do Triângulo' }} />
         <Stack.Screen name="AreaQuadrado" component={TelaAreaQuadrado} options={{ title: 'Área do Quadrado' }} />
-        <Stack.Screen name="CalculadoraIdade" component={TelaCalculadoraIdade} options={{ title: 'Calculadora de Idade' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -24,64 +24,6 @@ const TelaInicial = ({ navigation }) => {
       <Button title="Calcular Idade" onPress={() => navigation.navigate('CalculadoraIdade')} />
       <Button title="Calcular Área do Triângulo" onPress={() => navigation.navigate('AreaTriangulo')} />
       <Button title="Calcular Área do Quadrado" onPress={() => navigation.navigate('AreaQuadrado')} />
-    </View>
-  );
-};
-
-const TelaAreaTriangulo = () => {
-  const [base, setBase] = useState('');
-  const [altura, setAltura] = useState('');
-  const [area, setArea] = useState(null);
-
-  const calcularArea = () => {
-    const areaCalculada = (parseFloat(base) * parseFloat(altura)) / 2;
-    setArea(areaCalculada);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Área do Triângulo</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Digite a base do triângulo"
-        onChangeText={(text) => setBase(text)}
-        keyboardType="numeric"
-        value={base}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Digite a altura do triângulo"
-        onChangeText={(text) => setAltura(text)}
-        keyboardType="numeric"
-        value={altura}
-      />
-      <Button title="Calcular Área" onPress={calcularArea} />
-      {area !== null && <Text style={styles.result}>Área do Triângulo: {area}</Text>}
-    </View>
-  );
-};
-
-const TelaAreaQuadrado = () => {
-  const [lado, setLado] = useState('');
-  const [area, setArea] = useState(null);
-
-  const calcularArea = () => {
-    const areaCalculada = parseFloat(lado) * parseFloat(lado);
-    setArea(areaCalculada);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Área do Quadrado</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Digite o comprimento do lado"
-        onChangeText={(text) => setLado(text)}
-        keyboardType="numeric"
-        value={lado}
-      />
-      <Button title="Calcular Área" onPress={calcularArea} />
-      {area !== null && <Text style={styles.result}>Área do Quadrado: {area}</Text>}
     </View>
   );
 };
@@ -113,12 +55,78 @@ const TelaCalculadoraIdade = () => {
       <TextInput
         style={styles.input}
         placeholder="Digite sua idade"
-        onChangeText={(text) => setIdade(text)}
+        onChangeText={setIdade}
         keyboardType="numeric"
         value={idade}
       />
       <Button title="Verificar Faixa Etária" onPress={verificarFaixaEtaria} />
       <Text style={styles.result}>Faixa Etária: {faixaEtaria}</Text>
+    </View>
+  );
+};
+
+const TelaAreaTriangulo = () => {
+  const [base, setBase] = useState('');
+  const [altura, setAltura] = useState('');
+  const [area, setArea] = useState(null);
+
+  const calcularArea = () => {
+    const areaCalculada = (parseFloat(base) * parseFloat(altura)) / 2;
+    setArea(areaCalculada);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Área do Triângulo</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite a base do triângulo"
+        onChangeText={setBase}
+        keyboardType="numeric"
+        value={base}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Digite a altura do triângulo"
+        onChangeText={setAltura}
+        keyboardType="numeric"
+        value={altura}
+      />
+      <Button title="Calcular Área" onPress={calcularArea} />
+      {area !== null && <Text style={styles.result}>Área do Triângulo: {area}</Text>}
+    </View>
+  );
+};
+
+const TelaAreaQuadrado = () => {
+  const [lado1, setLado1] = useState('');
+  const [lado2, setLado2] = useState('');
+  const [area, setArea] = useState(null);
+
+  const calcularArea = () => {
+    const areaCalculada = parseFloat(lado1) * parseFloat(lado2);
+    setArea(areaCalculada);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Área do Quadrado</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite o comprimento do lado 1"
+        onChangeText={setLado1}
+        keyboardType="numeric"
+        value={lado1}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Digite o comprimento do lado 2"
+        onChangeText={setLado2}
+        keyboardType="numeric"
+        value={lado2}
+      />
+      <Button title="Calcular Área" onPress={calcularArea} />
+      {area !== null && <Text style={styles.result}>Área do Quadrado: {area}</Text>}
     </View>
   );
 };
