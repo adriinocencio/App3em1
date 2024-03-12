@@ -1,0 +1,150 @@
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={TelaInicial} options={{ title: 'Calculadora' }} />
+        <Stack.Screen name="AreaTriangulo" component={TelaAreaTriangulo} options={{ title: 'Área do Triângulo' }} />
+        <Stack.Screen name="AreaQuadrado" component={TelaAreaQuadrado} options={{ title: 'Área do Quadrado' }} />
+        <Stack.Screen name="CalculadoraIdade" component={TelaCalculadoraIdade} options={{ title: 'Calculadora de Idade' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+const TelaInicial = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Button title="Calcular Idade" onPress={() => navigation.navigate('CalculadoraIdade')} />
+      <Button title="Calcular Área do Triângulo" onPress={() => navigation.navigate('AreaTriangulo')} />
+      <Button title="Calcular Área do Quadrado" onPress={() => navigation.navigate('AreaQuadrado')} />
+    </View>
+  );
+};
+
+const TelaAreaTriangulo = () => {
+  const [base, setBase] = useState('');
+  const [altura, setAltura] = useState('');
+  const [area, setArea] = useState(null);
+
+  const calcularArea = () => {
+    const areaCalculada = (parseFloat(base) * parseFloat(altura)) / 2;
+    setArea(areaCalculada);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Área do Triângulo</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite a base do triângulo"
+        onChangeText={(text) => setBase(text)}
+        keyboardType="numeric"
+        value={base}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Digite a altura do triângulo"
+        onChangeText={(text) => setAltura(text)}
+        keyboardType="numeric"
+        value={altura}
+      />
+      <Button title="Calcular Área" onPress={calcularArea} />
+      {area !== null && <Text style={styles.result}>Área do Triângulo: {area}</Text>}
+    </View>
+  );
+};
+
+const TelaAreaQuadrado = () => {
+  const [lado, setLado] = useState('');
+  const [area, setArea] = useState(null);
+
+  const calcularArea = () => {
+    const areaCalculada = parseFloat(lado) * parseFloat(lado);
+    setArea(areaCalculada);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Área do Quadrado</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite o comprimento do lado"
+        onChangeText={(text) => setLado(text)}
+        keyboardType="numeric"
+        value={lado}
+      />
+      <Button title="Calcular Área" onPress={calcularArea} />
+      {area !== null && <Text style={styles.result}>Área do Quadrado: {area}</Text>}
+    </View>
+  );
+};
+
+const TelaCalculadoraIdade = () => {
+  const [idade, setIdade] = useState('');
+  const [faixaEtaria, setFaixaEtaria] = useState('');
+
+  const verificarFaixaEtaria = () => {
+    const idadeInt = parseInt(idade);
+    if (idadeInt >= 0 && idadeInt <= 12) {
+      setFaixaEtaria('Criança');
+    } else if (idadeInt >= 13 && idadeInt <= 17) {
+      setFaixaEtaria('Adolescente');
+    } else if (idadeInt >= 18 && idadeInt <= 20) {
+      setFaixaEtaria('Jovem');
+    } else if (idadeInt >= 21 && idadeInt <= 60) {
+      setFaixaEtaria('Adulto');
+    } else if (idadeInt > 60) {
+      setFaixaEtaria('Idoso');
+    } else {
+      setFaixaEtaria('Idade inválida');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Calculadora de Idade</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite sua idade"
+        onChangeText={(text) => setIdade(text)}
+        keyboardType="numeric"
+        value={idade}
+      />
+      <Button title="Verificar Faixa Etária" onPress={verificarFaixaEtaria} />
+      <Text style={styles.result}>Faixa Etária: {faixaEtaria}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  result: {
+    marginTop: 10,
+    fontSize: 18,
+  },
+});
